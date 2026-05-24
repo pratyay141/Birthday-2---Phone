@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>Happy Birthday Shohini 🎂</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    /* ============================================
+       ALL STYLES — MERGED & MOBILE-FIRST
+       ============================================ */
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --emerald-light:  #69f0ae;
+      --shohini-green:  #00c28a;
+      --gold:           #ffd700;
+      --gold-light:     #ffe566;
+      --gold-mid:       #f0a500;
+      --bg-dark:        #0a0a0a;
+      --glass-bg:       rgba(255,215,0,0.04);
+      --glass-border:   rgba(255,215,0,0.18);
+      --font-display:   'Dancing Script', cursive;
+      --font-btn:       'Cinzel', Georgia, serif;
+      --font-body:      'Poppins', sans-serif;
+    }
+
+    /* ── BODY ── */
+    body {
+      font-family: var(--font-body);
+      background: #0a0a0a;
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: #fff;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* ── STARS CANVAS ── */
+    #stars-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── TURNING 24 OVERLAY ── */
+    #turning24-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(3,3,10,0.96);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.9s ease;
+    }
+
+    #sparkle-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .turning24-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .t24-sparkle-row {
+      font-size: 1.6rem;
+      letter-spacing: 8px;
+      animation: sparkleRowPulse 1.4s ease-in-out infinite;
+      filter: drop-shadow(0 0 10px rgba(255,215,0,0.80));
+    }
+
+    .turning24-text {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 16vw, 5rem);
+      font-weight: 700;
+      color: transparent;
+      background: linear-gradient(
+        135deg,
+        #fff5a0 0%, #ffd700 28%, #ffaa00 52%, #ffd700 76%, #fff5a0 100%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 2px;
+      line-height: 1.1;
+      animation: turning24Glow 2s ease-in-out infinite alternate;
+      filter:
+        drop-shadow(0 0 18px rgba(255,215,0,0.95))
+        drop-shadow(0 0 40px rgba(255,180,0,0.65))
+        drop-shadow(0 0 80px rgba(255,150,0,0.35));
+    }
+
+    .t24-sparkle-row-bottom {
+      font-size: 1.6rem;
+      letter-spacing: 8px;
+      animation: sparkleRowPulse 1.4s ease-in-out infinite reverse;
+      filter: drop-shadow(0 0 10px rgba(255,215,0,0.80));
+    }
+
+    .turning24-sub {
+      font-family: var(--font-display);
+      font-size: clamp(1rem, 4vw, 1.4rem);
+      color: rgba(255,215,0,0.78);
+      letter-spacing: 3px;
+      animation: floatText 2.2s ease-in-out infinite;
+      text-shadow: 0 0 14px rgba(255,215,0,0.60), 0 0 30px rgba(255,180,0,0.30);
+    }
+
+    /* ── BLUR OVERLAY ── */
+    .blur-overlay {
+      position: fixed;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      filter: blur(16px) brightness(0.30) saturate(1.6);
+      transform: scale(1.1);
+      z-index: 2;
+      transition: opacity 1s ease;
+    }
+
+    /* ── STAGES ── */
+    .stage {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 0.75s ease;
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    .stage.active  { opacity: 1; pointer-events: all;  }
+    .stage.hidden  { opacity: 0; pointer-events: none; }
+    .hidden        { display: none !important;          }
+
+    #stage-0 {
+      gap: 28px;
+      background: transparent;
+    }
+
+    .click-hint-text {
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      color: var(--gold);
+      text-shadow: 0 0 18px rgba(255,215,0,0.85), 0 0 40px rgba(255,215,0,0.40);
+      animation: floatText 2.5s ease-in-out infinite;
+      letter-spacing: 2px;
+      z-index: 11;
+      position: relative;
+      text-align: center;
+    }
+
+    .tap-animation {
+      font-size: 2.5rem;
+      animation: tapBounce 1s ease-in-out infinite;
+      z-index: 11;
+    }
+
+    /* ── GOLDEN BUTTON ── */
+    .glow-btn {
+      position: relative;
+      padding: 15px 38px;
+      font-size: 1.1rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: #1a0f00;
+      background: linear-gradient(
+        160deg,
+        #ffe680 0%, #ffd700 22%, #f0a500 52%, #ffd700 78%, #ffe680 100%
+      );
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      overflow: hidden;
+      letter-spacing: 1px;
+      text-transform: none;
+      box-shadow:
+        0 0 14px rgba(255,215,0,0.70),
+        0 0 32px rgba(255,183,0,0.38),
+        0 0 58px rgba(255,183,0,0.14),
+        0  4px 18px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.55),
+        inset 0 -1px 0 rgba(160,100,0,0.30);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      animation: pulseBtn 2.2s ease-in-out infinite;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.40), 0 -1px 0 rgba(120,70,0,0.25);
+      z-index: 11;
+      border-top: 1px solid rgba(255,255,200,0.60);
+      border-bottom: 1px solid rgba(140,90,0,0.40);
+      line-height: 1;
+    }
+
+    .glow-btn:hover {
+      transform: scale(1.07);
+      background: linear-gradient(
+        160deg,
+        #fff0a0 0%, #ffe033 22%, #f5ad00 52%, #ffe033 78%, #fff0a0 100%
+      );
+    }
+
+    .glow-btn:active { transform: scale(0.97); }
+
+    .glow-btn::after {
+      content: '';
+      position: absolute;
+      top: -50%; left: -75%;
+      width: 50%; height: 200%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.50), transparent);
+      transform: skewX(-20deg);
+      animation: shimmer 2.8s infinite;
+    }
+
+    .glow-btn::before {
+      content: '';
+      position: absolute;
+      inset: 4px 8px;
+      border-radius: 44px;
+      border: 1px solid rgba(255,255,180,0.22);
+      pointer-events: none;
+    }
+
+    .stage-btn { margin-top: 22px; }
+
+    /* ── MOBILE TOP/BOTTOM BANNERS ── */
+    .banner-top,
+    .banner-bottom {
+      position: fixed;
+      left: 0; right: 0;
+      z-index: 20;
+      text-align: center;
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      color: var(--gold);
+      text-shadow: 0 0 12px rgba(255,215,0,0.70);
+      padding: 10px;
+      background: rgba(8,8,8,0.80);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      opacity: 0;
+      transition: opacity 0.8s ease;
+      letter-spacing: 1px;
+    }
+
+    .banner-top    { top: 0;    }
+    .banner-bottom { bottom: 0; }
+
+    .banner-top.visible,
+    .banner-bottom.visible { opacity: 1; }
+
+    /* ── SIDE RIBBON BANNERS ── */
+    .banners-left,
+    .banners-right {
+      position: fixed;
+      top: 0;
+      height: 100vh;
+      width: 48px;
+      z-index: 20;
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      display: flex;
+      align-items: stretch;
+    }
+
+    .banners-left {
+      left: 0;
+      transform: translateX(-48px);
+      background: linear-gradient(
+        180deg,
+        #b8860b 0%, #ffd700 18%, #ffe566 32%,
+        #ffd700 50%, #f0a500 68%, #ffd700 82%, #b8860b 100%
+      );
+      box-shadow:
+        4px 0 18px rgba(255,215,0,0.55),
+        8px 0 38px rgba(255,183,0,0.30),
+        14px 0 60px rgba(255,215,0,0.14);
+      border-right: 1px solid rgba(255,255,200,0.45);
+    }
+
+    .banners-right {
+      right: 0;
+      transform: translateX(48px);
+      background: linear-gradient(
+        180deg,
+        #b8860b 0%, #ffd700 18%, #ffe566 32%,
+        #ffd700 50%, #f0a500 68%, #ffd700 82%, #b8860b 100%
+      );
+      box-shadow:
+        -4px 0 18px rgba(255,215,0,0.55),
+        -8px 0 38px rgba(255,183,0,0.30),
+        -14px 0 60px rgba(255,215,0,0.14);
+      border-left: 1px solid rgba(255,255,200,0.45);
+    }
+
+    .banners-left.visible,
+    .banners-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .banners-left::after,
+    .banners-right::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(255,255,255,0.18) 0%, transparent 30%,
+        rgba(255,255,255,0.10) 60%, transparent 100%
+      );
+      pointer-events: none;
+      animation: ribbonSheen 3.5s ease-in-out infinite alternate;
+    }
+
+    .ribbon-track {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      animation: ribbonScroll 8s linear infinite;
+      will-change: transform;
+    }
+
+    .ribbon-letter {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #1a0f00;
+      text-shadow:
+        0 1px 0 rgba(255,255,180,0.70),
+        0 -1px 0 rgba(100,60,0,0.40),
+        0 0 8px rgba(255,215,0,0.30);
+      line-height: 1;
+      padding: 2px 0;
+      display: block;
+      user-select: none;
+      animation: letterDrop 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+
+    .ribbon-spacer {
+      display: block;
+      height: 18px;
+      width: 100%;
+    }
+
+    .ribbon-star {
+      font-size: 0.75rem;
+      color: rgba(80,40,0,0.75);
+      text-align: center;
+      display: block;
+      padding: 2px 0;
+      user-select: none;
+    }
+
+    /* ── STAGE 1 — PHOTO REVEAL ── */
+    .hbd-banner-top {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      color: var(--gold);
+      text-shadow: 0 0 14px rgba(255,215,0,0.85), 0 0 30px rgba(255,215,0,0.40);
+      animation: floatText 2.5s ease-in-out infinite;
+      margin: 8px 0 4px;
+      letter-spacing: 2px;
+      text-align: center;
+    }
+
+    .hbd-banner-bottom {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      color: var(--shohini-green);
+      text-shadow:
+        0 0 14px rgba(0,194,138,0.90),
+        0 0 30px rgba(0,194,138,0.55),
+        0 0 55px rgba(0,194,138,0.25);
+      animation: floatText 2.5s ease-in-out infinite;
+      margin: 4px 0;
+      letter-spacing: 2px;
+      text-align: center;
+    }
+
+    .photo-frame {
+      position: relative;
+      width: 230px;
+      height: 278px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 3px rgba(255,215,0,0.90),
+        0 0 0 6px rgba(255,183,0,0.38),
+        0 0 0 9px rgba(255,215,0,0.14),
+        0 0 22px rgba(255,215,0,0.72),
+        0 0 44px rgba(255,183,0,0.46),
+        0 0 70px rgba(255,160,0,0.24),
+        0 15px 40px rgba(0,0,0,0.55);
+      animation: photoGoldPulse 2.6s ease-in-out infinite alternate;
+    }
+
+    .reveal-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      animation: revealPhoto 1.4s cubic-bezier(0.4,0,0.2,1) forwards;
+    }
+
+    .photo-shine {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        120deg,
+        transparent 28%,
+        rgba(255,215,0,0.07) 46%,
+        rgba(255,255,255,0.06) 52%,
+        transparent 72%
+      );
+      animation: shineSwipe 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .confetti-strip {
+      display: flex;
+      gap: 4px;
+      margin: 10px 0 4px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 320px;
+    }
+
+    .strip-emoji {
+      font-size: 1.2rem;
+      display: inline-block;
+      animation: popIn 0.4s ease both;
+    }
+
+    /* ── STAGE 2 — CANDLES ── */
+    .candle-title {
+      font-family: var(--font-display);
+      font-size: 1.7rem;
+      color: var(--gold);
+      text-shadow: 0 0 18px rgba(255,215,0,0.85), 0 0 38px rgba(255,215,0,0.35);
+      text-align: center;
+      margin-bottom: 6px;
+      letter-spacing: 1px;
+    }
+
+    .candle-sub {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.80);
+      margin-bottom: 18px;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+
+    .candles-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 11px;
+      justify-items: center;
+      max-width: 330px;
+      margin: 0 auto;
+    }
+
+    .candle-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.2s;
+      position: relative;
+      width: 24px;
+    }
+
+    .candle-wrap:hover { transform: scale(1.12); }
+
+    .candle-body {
+      width: 16px;
+      height: 44px;
+      border-radius: 4px 4px 2px 2px;
+      position: relative;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.35);
+    }
+
+    .wax-drip {
+      position: absolute;
+      top: 4px; left: 50%;
+      transform: translateX(-50%);
+      width: 5px; height: 8px;
+      background: rgba(255,255,255,0.35);
+      border-radius: 0 0 4px 4px;
+    }
+
+    .flame {
+      width: 11px;
+      height: 18px;
+      margin: 0 auto 2px;
+      background: radial-gradient(
+        ellipse at 50% 70%,
+        #ffffff 0%, #ffd700 28%, #ff8c00 58%, transparent 100%
+      );
+      border-radius: 50% 50% 28% 28%;
+      position: relative;
+      animation: flicker 0.45s ease-in-out infinite alternate;
+      filter:
+        drop-shadow(0 0 5px rgba(255,150,0,0.95))
+        drop-shadow(0 0 12px rgba(255,100,0,0.70))
+        drop-shadow(0 0 22px rgba(255,80,0,0.40));
+    }
+
+    .flame-inner {
+      position: absolute;
+      bottom: 3px; left: 50%;
+      transform: translateX(-50%);
+      width: 5px; height: 8px;
+      background: radial-gradient(ellipse at 50% 100%, #ffffff 0%, #ffd700 100%);
+      border-radius: 50% 50% 28% 28%;
+    }
+
+    .candle-wrap.blown .flame {
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      animation: none;
+    }
+
+    .candle-wrap.blown {
+      filter: grayscale(0.35);
+      cursor: default;
+    }
+
+    .smoke {
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 5px; height: 5px;
+      background: rgba(210,210,210,0.75);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: smokeRise 1.2s ease-out forwards;
+    }
+
+    .blow-progress {
+      margin: 16px auto 0;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.85);
+      font-weight: 700;
+      text-align: center;
+      transition: color 0.5s;
+      letter-spacing: 1px;
+    }
+
+    /* ── STAGE 3 — MESSAGE CARD ── */
+    .message-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-radius: 24px;
+      padding: 28px 20px;
+      max-width: 420px;
+      width: 90vw;
+      text-align: center;
+      box-shadow:
+        0 0 0 1px rgba(255,215,0,0.08),
+        0 0 35px rgba(255,215,0,0.08),
+        0 20px 60px rgba(0,0,0,0.45);
+      animation: cardSlideUp 0.8s ease forwards;
+    }
+
+    .cake-img {
+      width: 90px;
+      margin-bottom: 16px;
+      filter:
+        drop-shadow(0 0 14px rgba(255,215,0,0.75))
+        drop-shadow(0 0 32px rgba(255,183,0,0.45))
+        drop-shadow(0 0 55px rgba(255,160,0,0.22));
+    }
+
+    .animate-float { animation: floatImg 3s ease-in-out infinite; }
+
+    .wish-title {
+      font-family: var(--font-display);
+      font-size: 1.9rem;
+      color: var(--gold);
+      text-shadow: 0 0 18px rgba(255,215,0,0.75), 0 0 40px rgba(255,215,0,0.30);
+      line-height: 1.25;
+      margin-bottom: 16px;
+      letter-spacing: 1px;
+    }
+
+    .name-highlight {
+      color: var(--shohini-green);
+      text-shadow:
+        0 0 14px rgba(0,194,138,0.90),
+        0 0 30px rgba(0,194,138,0.55),
+        0 0 55px rgba(0,194,138,0.25);
+    }
+
+    .wish-text-tw {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: rgba(255,255,255,0.90);
+      min-height: 100px;
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+
+    .tw-cursor {
+      display: inline-block;
+      color: var(--gold);
+      font-weight: 300;
+      animation: cursorBlink 0.75s step-end infinite;
+      margin-left: 1px;
+    }
+
+    .signature {
+      margin-top: 18px;
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      color: var(--emerald-light);
+      text-shadow: 0 0 10px rgba(0,200,83,0.45);
+      letter-spacing: 1px;
+    }
+
+    .confetti-again-btn {
+      margin-top: 18px;
+      font-size: 1.05rem;
+      padding: 13px 32px;
+    }
+
+    .fireworks-hint {
+      margin-top: 12px;
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      color: rgba(255,215,0,0.55);
+      letter-spacing: 1px;
+      animation: floatText 3s ease-in-out infinite;
+    }
+
+    /* ── BALLOONS ── */
+    .balloon {
+      position: fixed;
+      bottom: -80px;
+      z-index: 50;
+      animation: riseUp linear forwards;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* ══════════════════════════════════════════
+       KEYFRAMES
+    ══════════════════════════════════════════ */
+    @keyframes floatText {
+      0%, 100% { transform: translateY(0);    }
+      50%       { transform: translateY(-8px); }
+    }
+
+    @keyframes turning24Glow {
+      0% {
+        filter:
+          drop-shadow(0 0 14px rgba(255,215,0,0.90))
+          drop-shadow(0 0 35px rgba(255,180,0,0.60))
+          drop-shadow(0 0 65px rgba(255,150,0,0.28));
+      }
+      100% {
+        filter:
+          drop-shadow(0 0 28px rgba(255,215,0,1.00))
+          drop-shadow(0 0 60px rgba(255,200,0,0.80))
+          drop-shadow(0 0 110px rgba(255,160,0,0.45));
+      }
+    }
+
+    @keyframes sparkleRowPulse {
+      0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 8px rgba(255,215,0,0.70));
+      }
+      50% {
+        transform: scale(1.12);
+        filter: drop-shadow(0 0 20px rgba(255,215,0,1.00));
+      }
+    }
+
+    @keyframes photoGoldPulse {
+      0% {
+        box-shadow:
+          0 0 0 3px rgba(255,215,0,0.90),
+          0 0 0 6px rgba(255,183,0,0.38),
+          0 0 0 9px rgba(255,215,0,0.14),
+          0 0 22px rgba(255,215,0,0.72),
+          0 0 44px rgba(255,183,0,0.46),
+          0 0 70px rgba(255,160,0,0.24),
+          0 15px 40px rgba(0,0,0,0.55);
+      }
+      100% {
+        box-shadow:
+          0 0 0 3px rgba(255,220,50,1.00),
+          0 0 0 6px rgba(255,200,0,0.55),
+          0 0 0 11px rgba(255,215,0,0.20),
+          0 0 35px rgba(255,215,0,0.95),
+          0 0 65px rgba(255,200,0,0.65),
+          0 0 100px rgba(255,170,0,0.35),
+          0 15px 40px rgba(0,0,0,0.55);
+      }
+    }
+
+    @keyframes ribbonScroll {
+      0%   { transform: translateY(0);    }
+      100% { transform: translateY(-50%); }
+    }
+
+    @keyframes ribbonSheen {
+      0%   { opacity: 0.5; }
+      100% { opacity: 1.0; }
+    }
+
+    @keyframes letterDrop {
+      0%   { transform: translateY(-40px) scale(0.6); opacity: 0; }
+      60%  { transform: translateY(6px)   scale(1.08); opacity: 1; }
+      100% { transform: translateY(0)     scale(1);    opacity: 1; }
+    }
+
+    @keyframes pulseBtn {
+      0%, 100% {
+        box-shadow:
+          0 0 14px rgba(255,215,0,0.70),
+          0 0 32px rgba(255,183,0,0.38),
+          0 0 58px rgba(255,183,0,0.14),
+          0  4px 18px rgba(0,0,0,0.35),
+          inset 0 1px 0 rgba(255,255,255,0.55),
+          inset 0 -1px 0 rgba(160,100,0,0.30);
+      }
+      50% {
+        box-shadow:
+          0 0 24px rgba(255,215,0,0.92),
+          0 0 50px rgba(255,200,0,0.52),
+          0 0 85px rgba(255,183,0,0.20),
+          0  4px 18px rgba(0,0,0,0.35),
+          inset 0 1px 0 rgba(255,255,255,0.60),
+          inset 0 -1px 0 rgba(160,100,0,0.30);
+      }
+    }
+
+    @keyframes shimmer {
+      0%   { left: -75%;  }
+      100% { left:  130%; }
+    }
+
+    @keyframes flicker {
+      0%   { transform: scaleX(1)    scaleY(1)    rotate(-1.5deg); opacity: 1;    }
+      100% { transform: scaleX(0.88) scaleY(1.07) rotate(1.5deg);  opacity: 0.92; }
+    }
+
+    @keyframes revealPhoto {
+      from { clip-path: inset(0 100% 0 0); opacity: 0; }
+      to   { clip-path: inset(0 0%   0 0); opacity: 1; }
+    }
+
+    @keyframes shineSwipe {
+      0%   { transform: translateX(-120%) skewX(-15deg); }
+      55%  { transform: translateX(220%)  skewX(-15deg); }
+      100% { transform: translateX(220%)  skewX(-15deg); }
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0) rotate(-10deg); opacity: 0; }
+      to   { transform: scale(1) rotate(0deg);   opacity: 1; }
+    }
+
+    @keyframes smokeRise {
+      0%   { transform: translateX(-50%) translateY(0)     scale(1);   opacity: 0.75; }
+      100% { transform: translateX(-50%) translateY(-44px) scale(3.5); opacity: 0;    }
+    }
+
+    @keyframes floatImg {
+      0%, 100% { transform: translateY(0);     }
+      50%       { transform: translateY(-12px); }
+    }
+
+    @keyframes cardSlideUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+
+    @keyframes riseUp {
+      from { transform: translateY(0)      rotate(0deg);  opacity: 1; }
+      to   { transform: translateY(-110vh) rotate(15deg); opacity: 0; }
+    }
+
+    @keyframes tapBounce {
+      0%, 100% { transform: translateY(0);   }
+      50%       { transform: translateY(8px); }
+    }
+
+    @keyframes cursorBlink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <audio id="bg-music" src="music_ins.mp3" loop preload="auto"></audio>
+
+  <!-- Shooting Stars -->
+  <canvas id="stars-canvas"></canvas>
+
+  <!-- Turning 24 Overlay -->
+  <div id="turning24-overlay" class="hidden">
+    <canvas id="sparkle-canvas"></canvas>
+    <div class="turning24-content">
+      <div class="t24-sparkle-row">✨ &nbsp; ✨ &nbsp; ✨</div>
+      <div class="turning24-text">Turning 24</div>
+      <div class="t24-sparkle-row-bottom">✨ &nbsp; ✨ &nbsp; ✨</div>
+      <div class="turning24-sub">— Shohini —</div>
+    </div>
+  </div>
+
+  <!-- Blur Overlay -->
+  <div id="blur-overlay" class="blur-overlay"></div>
+
+  <!-- STAGE 0 -->
+  <div id="stage-0" class="stage active">
+    <div class="click-hint-text">✨ You Have A Surprise ✨</div>
+    <div class="tap-animation">👆</div>
+    <button id="main-btn" class="glow-btn" onclick="nextStage()">
+      Tap Me
+    </button>
+  </div>
+
+  <!-- Confetti Canvas -->
+  <canvas
+    id="confetti-canvas"
+    style="position:fixed;top:0;left:0;width:100%;height:100%;
+           pointer-events:none;z-index:999;"
+  ></canvas>
+
+  <!-- Mobile Top/Bottom Banners -->
+  <div id="banner-top"    class="banner-top    hidden">🎉 &nbsp; Happy Birthday &nbsp; 🎉</div>
+  <div id="banner-bottom" class="banner-bottom hidden">✨ &nbsp; Shohini &nbsp; ✨</div>
+
+  <!-- Side Ribbon Banners — content built by JS -->
+  <div id="banners-left"  class="banners-left  hidden"></div>
+  <div id="banners-right" class="banners-right hidden"></div>
+
+  <!-- STAGE 1 -->
+  <div id="stage-1" class="stage hidden">
+    <div class="hbd-banner-top">🎉 Happy Birthday 🎉</div>
+    <div class="photo-frame">
+      <img id="reveal-photo" src="your-photo.jpg" alt="Shohini" class="reveal-img"/>
+      <div class="photo-shine"></div>
+    </div>
+    <div class="hbd-banner-bottom">✨ Shohini ✨</div>
+    <div class="confetti-strip" id="confetti-strip"></div>
+    <button class="glow-btn stage-btn" onclick="nextStage()">
+      🎂 Blow Your Candles
+    </button>
+  </div>
+
+  <!-- STAGE 2 -->
+  <div id="stage-2" class="stage hidden">
+    <h2 class="candle-title">Make A Wish &amp; Blow Out Your Candles!</h2>
+    <p class="candle-sub">Tap each candle to blow it out 🌬️</p>
+    <div id="candles-container" class="candles-grid"></div>
+    <div id="blow-progress" class="blow-progress">0 / 24 blown</div>
+    <button id="blow-all-btn" class="glow-btn stage-btn hidden" onclick="nextStage()">
+      🎉 Wish Made
+    </button>
+  </div>
+
+  <!-- STAGE 3 -->
+  <div id="stage-3" class="stage hidden">
+    <div class="message-card">
+      <img src="cake.png" alt="Birthday Cake" class="cake-img animate-float"/>
+      <h1 class="wish-title">
+        Happy 24th Birthday,<br/>
+        <span class="name-highlight">Shohini!</span>
+      </h1>
+      <p id="wish-text-tw" class="wish-text-tw"></p>
+      <div class="signature">— With Love 💚</div>
+      <button class="glow-btn confetti-again-btn" onclick="celebrateAgain()">
+        🎊 Celebrate Again
+      </button>
+      <p class="fireworks-hint">✨ Tap anywhere for fireworks ✨</p>
+    </div>
+  </div>
+
+  <div id="balloons-container"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    /* ============================================
+       BIRTHDAY WEBSITE — SCRIPT (INLINE)
+       ============================================ */
+
+    let stage = 0;
+    let candlesBlown = 0;
+    const TOTAL_CANDLES = 24;
+    let musicStarted = false;
+    let confettiBurstInterval = null;
+    let shootingStarsActive = false;
+    let starsCanvas = null;
+    let starsCtx = null;
+    let stars = [];
+    let shooters = [];
+    let fireworksEnabled = false;
+    let sparkleParticles = [];
+    let sparkleRAF = null;
+    let sparkleCanvas = null;
+    let sparkleCtx = null;
+
+    function $(id) { return document.getElementById(id); }
+
+    function showStage(id) {
+      document.querySelectorAll('.stage').forEach(s => {
+        s.classList.remove('active');
+        s.classList.add('hidden');
+      });
+      const el = $(id);
+      if (el) {
+        el.classList.remove('hidden');
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => el.classList.add('active'))
+        );
+      }
+    }
+
+    /* ── MUSIC ── */
+    function startMusic() {
+      if (musicStarted) return;
+      const music = $('bg-music');
+      if (!music) return;
+      music.volume = 0;
+      music.play().then(() => {
+        musicStarted = true;
+        let vol = 0;
+        const fadeIn = setInterval(() => {
+          vol = Math.min(vol + 0.05, 0.8);
+          music.volume = vol;
+          if (vol >= 0.8) clearInterval(fadeIn);
+        }, 150);
+      }).catch(err => console.log('Autoplay blocked:', err));
+    }
+
+    /* ── SHOOTING STARS ── */
+    function initShootingStars() {
+      starsCanvas = document.getElementById('stars-canvas');
+      if (!starsCanvas) return;
+      starsCtx = starsCanvas.getContext('2d');
+      resizeStarsCanvas();
+      window.addEventListener('resize', resizeStarsCanvas);
+      stars = [];
+      for (let i = 0; i < 160; i++) {
+        stars.push({
+          x: Math.random() * starsCanvas.width,
+          y: Math.random() * starsCanvas.height,
+          r: Math.random() * 1.3 + 0.2,
+          alpha: Math.random(),
+          speed: Math.random() * 0.012 + 0.004,
+          dir: Math.random() > 0.5 ? 1 : -1
+        });
+      }
+      shooters = [];
+      shootingStarsActive = true;
+      animateStars();
+    }
+
+    function resizeStarsCanvas() {
+      if (!starsCanvas) return;
+      starsCanvas.width  = window.innerWidth;
+      starsCanvas.height = window.innerHeight;
+    }
+
+    function spawnShooter() {
+      const angle = (Math.random() * 30 + 15) * (Math.PI / 180);
+      shooters.push({
+        x: Math.random() * starsCanvas.width * 0.7,
+        y: Math.random() * starsCanvas.height * 0.4,
+        len: Math.random() * 120 + 80,
+        speed: Math.random() * 8 + 6,
+        angle,
+        alpha: 1,
+        decay: Math.random() * 0.018 + 0.012,
+        width: Math.random() * 1.5 + 0.8
+      });
+    }
+
+    function animateStars() {
+      if (!shootingStarsActive) return;
+      starsCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
+      stars.forEach(s => {
+        s.alpha += s.speed * s.dir;
+        if (s.alpha >= 1) { s.alpha = 1; s.dir = -1; }
+        if (s.alpha <= 0) { s.alpha = 0; s.dir =  1; }
+        starsCtx.beginPath();
+        starsCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        starsCtx.fillStyle = `rgba(255,255,220,${s.alpha})`;
+        starsCtx.fill();
+      });
+      if (Math.random() < 0.018) spawnShooter();
+      shooters.forEach(sh => {
+        starsCtx.save();
+        starsCtx.globalAlpha = sh.alpha;
+        const grad = starsCtx.createLinearGradient(
+          sh.x, sh.y,
+          sh.x - Math.cos(sh.angle) * sh.len,
+          sh.y - Math.sin(sh.angle) * sh.len
+        );
+        grad.addColorStop(0,   `rgba(255,255,200,${sh.alpha})`);
+        grad.addColorStop(0.4, `rgba(255,220,100,${sh.alpha * 0.6})`);
+        grad.addColorStop(1,   'rgba(255,200,80,0)');
+        starsCtx.strokeStyle = grad;
+        starsCtx.lineWidth   = sh.width;
+        starsCtx.beginPath();
+        starsCtx.moveTo(sh.x, sh.y);
+        starsCtx.lineTo(
+          sh.x - Math.cos(sh.angle) * sh.len,
+          sh.y - Math.sin(sh.angle) * sh.len
+        );
+        starsCtx.stroke();
+        starsCtx.restore();
+        sh.x     += Math.cos(sh.angle) * sh.speed;
+        sh.y     += Math.sin(sh.angle) * sh.speed;
+        sh.alpha -= sh.decay;
+      });
+      shooters = shooters.filter(sh => sh.alpha > 0);
+      requestAnimationFrame(animateStars);
+    }
+
+    /* ── SPARKLE CANVAS ── */
+    function initSparkleCanvas() {
+      sparkleCanvas = document.getElementById('sparkle-canvas');
+      if (!sparkleCanvas) return;
+      sparkleCtx = sparkleCanvas.getContext('2d');
+      sparkleCanvas.width  = window.innerWidth;
+      sparkleCanvas.height = window.innerHeight;
+    }
+
+    function spawnSparkleParticle() {
+      const cx = window.innerWidth  / 2;
+      const cy = window.innerHeight / 2;
+      const angle  = Math.random() * Math.PI * 2;
+      const radius = 80 + Math.random() * 260;
+      sparkleParticles.push({
+        x:      cx + Math.cos(angle) * radius * 0.4,
+        y:      cy + Math.sin(angle) * radius * 0.5,
+        vx:     (Math.random() - 0.5) * 1.8,
+        vy:     -(Math.random() * 1.4 + 0.4),
+        size:   Math.random() * 4 + 1.5,
+        alpha:  1,
+        decay:  Math.random() * 0.012 + 0.006,
+        pulse:  Math.random() * Math.PI * 2,
+        gold:   Math.random() > 0.35,
+        isStar: Math.random() > 0.55
+      });
+    }
+
+    function drawStar5(ctx, x, y, r, alpha, color) {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle   = color;
+      ctx.shadowColor = color;
+      ctx.shadowBlur  = r * 3;
+      ctx.beginPath();
+      for (let i = 0; i < 5; i++) {
+        const outerA = (i * 4 * Math.PI) / 5 - Math.PI / 2;
+        const innerA = outerA + (2 * Math.PI) / 10;
+        if (i === 0) ctx.moveTo(x + r * Math.cos(outerA), y + r * Math.sin(outerA));
+        else         ctx.lineTo(x + r * Math.cos(outerA), y + r * Math.sin(outerA));
+        ctx.lineTo(x + (r * 0.42) * Math.cos(innerA), y + (r * 0.42) * Math.sin(innerA));
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function animateSparkles() {
+      if (!sparkleCtx) return;
+      sparkleCtx.clearRect(0, 0, sparkleCanvas.width, sparkleCanvas.height);
+      if (Math.random() < 0.55) spawnSparkleParticle();
+      sparkleParticles.forEach(p => {
+        p.pulse += 0.12;
+        const pulsedAlpha = p.alpha * (0.75 + 0.25 * Math.sin(p.pulse));
+        const color = p.gold
+          ? `rgba(255,215,0,${pulsedAlpha})`
+          : `rgba(255,245,180,${pulsedAlpha})`;
+        if (p.isStar) {
+          drawStar5(sparkleCtx, p.x, p.y, p.size, pulsedAlpha, p.gold ? '#ffd700' : '#fff5a0');
+        } else {
+          sparkleCtx.beginPath();
+          sparkleCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          sparkleCtx.fillStyle   = color;
+          sparkleCtx.shadowColor = '#ffd700';
+          sparkleCtx.shadowBlur  = p.size * 4;
+          sparkleCtx.fill();
+          sparkleCtx.shadowBlur  = 0;
+        }
+        p.x     += p.vx;
+        p.y     += p.vy;
+        p.alpha -= p.decay;
+      });
+      sparkleParticles = sparkleParticles.filter(p => p.alpha > 0);
+      sparkleRAF = requestAnimationFrame(animateSparkles);
+    }
+
+    function stopSparkles() {
+      if (sparkleRAF) { cancelAnimationFrame(sparkleRAF); sparkleRAF = null; }
+      sparkleParticles = [];
+      if (sparkleCtx && sparkleCanvas) {
+        sparkleCtx.clearRect(0, 0, sparkleCanvas.width, sparkleCanvas.height);
+      }
+    }
+
+    /* ── TURNING 24 OVERLAY ── */
+    function showTurning24(callback) {
+      const overlay = $('turning24-overlay');
+      if (!overlay) { if (callback) callback(); return; }
+      overlay.classList.remove('hidden');
+      overlay.style.opacity = '0';
+      initSparkleCanvas();
+      animateSparkles();
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => { overlay.style.opacity = '1'; })
+      );
+      setTimeout(() => fireworkBurst(), 400);
+      setTimeout(() => fireworkBurst(), 900);
+      setTimeout(() => fireworkBurst(), 1400);
+      setTimeout(() => fireworkBurst(), 1900);
+      setTimeout(() => fireworkBurst(), 2400);
+      setTimeout(() => fireworkBurst(), 2900);
+      setTimeout(() => {
+        overlay.style.opacity = '0';
+        stopSparkles();
+        setTimeout(() => {
+          overlay.classList.add('hidden');
+          if (callback) callback();
+        }, 900);
+      }, 3400);
+    }
+
+    function fireworkBurst() {
+      if (typeof confetti !== 'function') return;
+      const x = 0.1 + Math.random() * 0.8;
+      const y = 0.05 + Math.random() * 0.45;
+      confetti({
+        particleCount: 90, spread: 360, startVelocity: 40,
+        decay: 0.91, gravity: 0.75, ticks: 300, origin: { x, y },
+        colors: ['#ffd700','#ff0044','#ff4400','#ffaa00','#ffffff','#ff69b4','#00eeff'],
+        shapes: ['circle'], scalar: 1.1
+      });
+      confetti({
+        particleCount: 35, spread: 360, startVelocity: 58,
+        decay: 0.94, gravity: 0.5, ticks: 340, origin: { x, y },
+        colors: ['#ffd700','#ffe680','#ffffff','#ff69b4'],
+        shapes: ['star'], scalar: 1.5
+      });
+    }
+
+    /* ── RIBBON BANNERS ── */
+    function buildRibbonBanner(containerId) {
+      const container = $(containerId);
+      if (!container) return;
+      container.innerHTML = '';
+      const phrase  = 'HAPPY BIRTHDAY';
+      const letters = phrase.split('');
+
+      function buildPass() {
+        const fragment = document.createDocumentFragment();
+        letters.forEach((ch, i) => {
+          if (ch === ' ') {
+            const star = document.createElement('span');
+            star.className   = 'ribbon-star';
+            star.textContent = '✦';
+            fragment.appendChild(star);
+          } else {
+            const span = document.createElement('span');
+            span.className   = 'ribbon-letter';
+            span.textContent = ch;
+            span.style.animationDelay = (i * 0.06) + 's';
+            fragment.appendChild(span);
+          }
+        });
+        const spacer = document.createElement('span');
+        spacer.className = 'ribbon-spacer';
+        fragment.appendChild(spacer);
+        const starMid = document.createElement('span');
+        starMid.className   = 'ribbon-star';
+        starMid.textContent = '❋';
+        fragment.appendChild(starMid);
+        const spacer2 = document.createElement('span');
+        spacer2.className = 'ribbon-spacer';
+        fragment.appendChild(spacer2);
+        return fragment;
+      }
+
+      const track = document.createElement('div');
+      track.className = 'ribbon-track';
+      for (let p = 0; p < 12; p++) { track.appendChild(buildPass()); }
+      container.appendChild(track);
+    }
+
+    /* ── TYPEWRITER ── */
+    function typewriterEffect(elementId, text, speed) {
+      speed    = speed || 36;
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      el.innerHTML = '';
+      const cursor       = document.createElement('span');
+      cursor.className   = 'tw-cursor';
+      cursor.textContent = '|';
+      let i = 0, output = '', inTag = false, tagBuf = '';
+      function tick() {
+        if (i >= text.length) { cursor.remove(); return; }
+        const ch = text[i];
+        if (ch === '<') { inTag = true; tagBuf = '<'; i++; return tick(); }
+        if (inTag) {
+          tagBuf += ch;
+          if (ch === '>') { inTag = false; output += tagBuf; tagBuf = ''; }
+          i++;
+          el.innerHTML = output;
+          el.appendChild(cursor);
+          requestAnimationFrame(tick);
+          return;
+        }
+        output += ch;
+        el.innerHTML = output;
+        el.appendChild(cursor);
+        i++;
+        setTimeout(tick, speed);
+      }
+      tick();
+    }
+
+    /* ── FIREWORKS ── */
+    function launchFirework(ox, oy) {
+      if (typeof confetti !== 'function') return;
+      confetti({
+        particleCount: 80, spread: 360, startVelocity: 38,
+        decay: 0.90, gravity: 0.8, ticks: 280, origin: { x: ox, y: oy },
+        colors: ['#ff0044','#ff4400','#ffaa00','#ffd700','#ffffff','#ff69b4','#00eeff'],
+        shapes: ['circle'], scalar: 1.1
+      });
+      confetti({
+        particleCount: 40, spread: 360, startVelocity: 22,
+        decay: 0.88, gravity: 0.6, ticks: 260, origin: { x: ox, y: oy },
+        colors: ['#ffd700','#ffe680','#fff0a0','#ffcc00'],
+        shapes: ['circle'], scalar: 0.7
+      });
+      confetti({
+        particleCount: 25, spread: 360, startVelocity: 55,
+        decay: 0.93, gravity: 0.5, ticks: 320, origin: { x: ox, y: oy },
+        colors: ['#ffffff','#ffd700','#ff69b4','#00fa9a'],
+        shapes: ['star'], scalar: 1.4
+      });
+    }
+
+    function enableFireworks() {
+      fireworksEnabled = true;
+      document.addEventListener('click',      onFireworkClick);
+      document.addEventListener('touchstart', onFireworkTouch, { passive: true });
+    }
+
+    function disableFireworks() {
+      fireworksEnabled = false;
+      document.removeEventListener('click',      onFireworkClick);
+      document.removeEventListener('touchstart', onFireworkTouch);
+    }
+
+    function onFireworkClick(e) {
+      if (!fireworksEnabled) return;
+      if (e.target && e.target.closest && e.target.closest('button')) return;
+      launchFirework(e.clientX / window.innerWidth, e.clientY / window.innerHeight);
+    }
+
+    function onFireworkTouch(e) {
+      if (!fireworksEnabled) return;
+      if (e.target && e.target.closest && e.target.closest('button')) return;
+      if (!e.touches || !e.touches[0]) return;
+      launchFirework(
+        e.touches[0].clientX / window.innerWidth,
+        e.touches[0].clientY / window.innerHeight
+      );
+    }
+
+    /* ── CELEBRATE AGAIN ── */
+    function celebrateAgain() {
+      burstConfettiCenter();
+      setTimeout(burstConfettiSides, 280);
+      setTimeout(burstConfettiCenter, 700);
+      setTimeout(() => launchFirework(0.20, 0.25), 100);
+      setTimeout(() => launchFirework(0.80, 0.20), 350);
+      setTimeout(() => launchFirework(0.50, 0.15), 600);
+      setTimeout(() => launchFirework(0.15, 0.35), 900);
+      setTimeout(() => launchFirework(0.85, 0.30), 1150);
+    }
+
+    /* ── STAGE CONTROLLER ── */
+    function nextStage() {
+      stage++;
+      switch (stage) {
+        case 1:
+          startMusic();
+          removeBlurOverlay();
+          showTurning24(() => {
+            showStage('stage-1');
+            showBanners();
+            setTimeout(() => burstConfettiCenter(), 600);
+            setTimeout(() => burstConfettiCenter(), 1800);
+            buildConfettiStrip();
+            launchBalloons();
+          });
+          break;
+        case 2:
+          disableFireworks();
+          showStage('stage-2');
+          hideBanners();
+          buildCandles();
+          candlesBlown = 0;
+          updateProgress();
+          break;
+        case 3:
+          showStage('stage-3');
+          enableFireworks();
+          startCelebrationConfetti();
+          launchBalloons();
+          setTimeout(() => {
+            typewriterEffect(
+              'wish-text-tw',
+              `I hope this little gesture brought a smile to your face and some genuine joy to your day.` +
+          ` There is something special about birthdays, they are a chance to wish for everything good for someone. 🌟<br/><br/>` +
+          `I wish for you a life full of success, abundance and the fulfillment of all your dreams.<br/><br/>` +
+          `May you feel God's love and blessings guiding you forward,` +
+          ` easing every burden and replacing sorrows with real peace and happiness.<br/><br/>` +
+          `Keep being radiant and beautiful self and never stop being who you really are.<br/><br/>`,
+              34
+            );
+          }, 900);
+          break;
+      }
+    }
+
+    /* ── HELPERS ── */
+    function removeBlurOverlay() {
+      const overlay = $('blur-overlay');
+      if (overlay) {
+        overlay.style.opacity = '0';
+        setTimeout(() => { overlay.style.display = 'none'; }, 1000);
+      }
+    }
+
+    function showBanners() {
+      buildRibbonBanner('banners-left');
+      buildRibbonBanner('banners-right');
+      ['banners-left','banners-right'].forEach(id => {
+        const el = $(id);
+        if (el) {
+          el.classList.remove('hidden');
+          requestAnimationFrame(() => el.classList.add('visible'));
+        }
+      });
+      ['banner-top','banner-bottom'].forEach(id => {
+        const el = $(id);
+        if (el) {
+          el.classList.remove('hidden');
+          requestAnimationFrame(() => el.classList.add('visible'));
+        }
+      });
+    }
+
+    function hideBanners() {
+      ['banners-left','banners-right','banner-top','banner-bottom'].forEach(id => {
+        const el = $(id);
+        if (el) {
+          el.classList.remove('visible');
+          setTimeout(() => el.classList.add('hidden'), 600);
+        }
+      });
+    }
+
+    function burstConfettiCenter() {
+      if (typeof confetti !== 'function') return;
+      confetti({
+        particleCount: 180, spread: 100, startVelocity: 45,
+        origin: { x: 0.5, y: 0.35 },
+        colors: ['#ff69b4','#ff1493','#ffd700','#ff6347','#00fa9a','#1e90ff','#ff00ff','#ffffff']
+      });
+    }
+
+    function burstConfettiSides() {
+      if (typeof confetti !== 'function') return;
+      confetti({
+        particleCount: 80, angle: 60, spread: 55,
+        origin: { x: 0, y: 0.65 },
+        colors: ['#ff69b4','#ffd700','#00fa9a']
+      });
+      confetti({
+        particleCount: 80, angle: 120, spread: 55,
+        origin: { x: 1, y: 0.65 },
+        colors: ['#ff69b4','#ffd700','#00fa9a']
+      });
+    }
+
+    function burstConfetti() {
+      burstConfettiCenter();
+      setTimeout(burstConfettiSides, 300);
+    }
+
+    function startCelebrationConfetti() {
+      if (confettiBurstInterval) clearInterval(confettiBurstInterval);
+      let count = 0;
+      burstConfetti();
+      confettiBurstInterval = setInterval(() => {
+        burstConfetti();
+        count++;
+        if (count >= 6) clearInterval(confettiBurstInterval);
+      }, 1500);
+    }
+
+    function buildConfettiStrip() {
+      const strip = $('confetti-strip');
+      if (!strip) return;
+      const emojis = ['🎊','🎉','✨','🎈','💕','🌟','🥳','🎂'];
+      strip.innerHTML = '';
+      for (let i = 0; i < 16; i++) {
+        const span = document.createElement('span');
+        span.textContent = emojis[i % emojis.length];
+        span.className   = 'strip-emoji';
+        span.style.animationDelay = (i * 0.1) + 's';
+        strip.appendChild(span);
+      }
+    }
+
+    function launchBalloons() {
+      const container = $('balloons-container');
+      if (!container) return;
+      const emojis = ['🎈','❤️','🎉','🥳','✨','💕','🌟'];
+      for (let i = 0; i < 14; i++) {
+        const b = document.createElement('div');
+        b.className   = 'balloon';
+        b.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        b.style.left  = (3 + Math.random() * 94) + 'vw';
+        b.style.fontSize = (1.2 + Math.random() * 1.5) + 'rem';
+        const dur = 5 + Math.random() * 4;
+        b.style.animationDuration = dur + 's';
+        b.style.animationDelay    = (Math.random() * 2) + 's';
+        container.appendChild(b);
+        setTimeout(() => b.remove(), (dur + 2) * 1000);
+      }
+    }
+
+    function buildCandles() {
+      const container = $('candles-container');
+      if (!container) return;
+      container.innerHTML = '';
+      const colors = [
+        '#ff6b9d','#ffd166','#06d6a0','#118ab2',
+        '#ef476f','#a8dadc','#ff9f1c','#e9c46a'
+      ];
+      for (let i = 0; i < TOTAL_CANDLES; i++) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'candle-wrap';
+        const flame = document.createElement('div');
+        flame.className = 'flame';
+        const inner = document.createElement('div');
+        inner.className = 'flame-inner';
+        flame.appendChild(inner);
+        const body = document.createElement('div');
+        body.className = 'candle-body';
+        const drip = document.createElement('div');
+        drip.className = 'wax-drip';
+        body.appendChild(drip);
+        wrapper.appendChild(flame);
+        wrapper.appendChild(body);
+        wrapper.addEventListener('click', () => blowCandle(wrapper));
+        const c = colors[i % colors.length];
+        body.style.background =
+          `linear-gradient(to bottom, ${c}, ${shadeColor(c, -30)})`;
+        container.appendChild(wrapper);
+      }
+    }
+
+    function shadeColor(color, percent) {
+      let R = parseInt(color.slice(1,3), 16);
+      let G = parseInt(color.slice(3,5), 16);
+      let B = parseInt(color.slice(5,7), 16);
+      R = Math.min(255, Math.max(0, R + percent));
+      G = Math.min(255, Math.max(0, G + percent));
+      B = Math.min(255, Math.max(0, B + percent));
+      return '#'
+        + R.toString(16).padStart(2,'0')
+        + G.toString(16).padStart(2,'0')
+        + B.toString(16).padStart(2,'0');
+    }
+
+    function blowCandle(wrapper) {
+      if (wrapper.classList.contains('blown')) return;
+      wrapper.classList.add('blown');
+      const smoke = document.createElement('div');
+      smoke.className = 'smoke';
+      wrapper.appendChild(smoke);
+      setTimeout(() => smoke.remove(), 1200);
+      candlesBlown++;
+      updateProgress();
+      if (typeof confetti === 'function') {
+        const rect = wrapper.getBoundingClientRect();
+        confetti({
+          particleCount: 15, spread: 30, startVelocity: 20,
+          origin: {
+            x: (rect.left + rect.width  / 2) / window.innerWidth,
+            y:  rect.top                      / window.innerHeight
+          },
+          colors: ['#ff69b4','#ffd700','#ffffff','#00fa9a']
+        });
+      }
+      if (candlesBlown === TOTAL_CANDLES) {
+        setTimeout(() => {
+          const btn = $('blow-all-btn');
+          if (btn) btn.classList.remove('hidden');
+          burstConfettiCenter();
+          setTimeout(() => burstConfettiCenter(), 600);
+        }, 600);
+      }
+    }
+
+    function updateProgress() {
+      const el = $('blow-progress');
+      if (!el) return;
+      el.textContent = `${candlesBlown} / ${TOTAL_CANDLES} blown`;
+      if (candlesBlown === TOTAL_CANDLES) {
+        el.textContent = '🌬️ All candles blown! Make your wish! 🌙';
+        el.style.color = '#ffd700';
+      }
+    }
+
+    /* ── DOM READY ── */
+    document.addEventListener('DOMContentLoaded', () => {
+      const overlay = $('blur-overlay');
+      if (overlay) overlay.style.backgroundImage = "url('your-photo.jpg')";
+      setDynamicBackground();
+      initShootingStars();
+    });
+
+    function setDynamicBackground() {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.src = 'your-photo.jpg';
+      img.onload = function () {
+        const canvas  = document.createElement('canvas');
+        canvas.width  = 8;
+        canvas.height = 8;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, 8, 8);
+        const data = ctx.getImageData(0, 0, 8, 8).data;
+        let r = 0, g = 0, b = 0, count = 0;
+        for (let i = 0; i < data.length; i += 4) {
+          r += data[i]; g += data[i+1]; b += data[i+2]; count++;
+        }
+        r = Math.floor(r / count);
+        g = Math.floor(g / count);
+        b = Math.floor(b / count);
+        const dr = Math.floor(r * 0.18);
+        const dg = Math.floor(g * 0.18);
+        const db = Math.floor(b * 0.18);
+        document.body.style.transition = 'background 2s ease';
+        document.body.style.background =
+          `radial-gradient(ellipse at 60% 40%,
+             rgb(${Math.min(dr+18,40)},${Math.min(dg+18,40)},${Math.min(db+18,40)}) 0%,
+             rgb(${dr},${dg},${db}) 100%)`;
+      };
+      img.onerror = function () {
+        document.body.style.background = '#0a0a0a';
+      };
+    }
+  </script>
+</body>
+</html>
